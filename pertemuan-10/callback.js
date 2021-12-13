@@ -8,6 +8,8 @@
 //     console.log(result);
 // }
 
+//==============================================================================================
+
 //callback dengan arrow function
 const formatName = (nama) => nama.toUpperCase();
 
