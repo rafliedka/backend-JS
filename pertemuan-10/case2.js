@@ -2,12 +2,13 @@
 const sec = (value) => value * 1000;
 
 //membuat const prom
-const promise = (waktu, desc) =>
+const promise = (waktu, desc) => {
     new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve(desc)
         }, sec(waktu));
     });
+}
 
 //promise producting
 function persiapan(params) {
