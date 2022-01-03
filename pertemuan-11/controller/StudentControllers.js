@@ -1,27 +1,32 @@
 //import api
-const { post, put } = require("../routes/api");
-const studentsData = require("../data/students");
+const Student = require("../models/Student");
+const StudentsData = require("../models/Student");
 
 // Membuat Class StudentController
 class StudentController {
-  //method index
-  index(req, res) {
-    const data = {
-      message: "Menampilkan semua pelajar",
-      data: studentsData,
-    };
 
-    res.json(data);
-  }
+  //method index dengan async await
+  async index(req, res) {
+    //memanggil method all dengan async await
+    const students = await Student.all();
+    
+      const data = {
+        message: "Menampilkan semua pelajar",
+        data: students,
+      };
+
+      res.json(data);
+  };
 
   //method store
-  store(req, res) {
-    const { nama } = req.body;
-    studentsData.push(nama);
+  async store(req, res) {
+    const { name, nim, email, jurusan, created_at, updated_at } = req.body;
+    Student.create(name, nim, email, jurusan, created_at, updated_at);
+    const students = await Student.all();
 
     const data = {
-      message: `Menambahkan data pelajar: ${nama}`,
-      data: studentsData,
+      message: `Menambahkan data pelajar`,
+      data: students,
     };
 
     res.json(data);
