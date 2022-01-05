@@ -36,6 +36,39 @@ class Student{
             });
         }); 
     }
+
+    static find(id) {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM students WHERE id = ?`;
+            db.query(query, id, (err, result) => {
+                //destructing array
+                const [student] = result;
+                resolve(student);
+            });
+        });
+    }
+
+    static async update(id, data) {
+        await new Promise((resolve, reject) => {
+            const query = `UPDATE students SET ? WHERE id = ?`;
+            db.query(query, [data, id], (err, result) => {
+                resolve(result);
+            });
+        });
+
+        //mencari data yang telah diupdate
+        const student = await this.find(id);
+        return student;
+    }
+
+    static async delete(id) {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM students WHERE id =?`;
+            db.query(query, id, (err, result) => {
+                resolve(result);
+            });
+        });
+    }
 }
 
 //eksport class student

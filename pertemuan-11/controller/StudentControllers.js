@@ -15,8 +15,13 @@ class StudentController {
         data: students,
       };
 
-      res.json(data);
+      res.status(200).json(data);
   };
+
+  //method show
+  async show() {
+    
+  }
 
   //method store
   async store(req, res) {
@@ -29,35 +34,51 @@ class StudentController {
       data: students,
     };
 
-    res.json(data);
+    res.status(201).json(data);
   }
 
   //method update
-  update(req, res) {
+  async update(req, res) {
     const { id } = req.params;
-    const { nama } = req.body;
+    const student = await Student.find(id);
 
-    studentsData[id] = nama;
+    if (student) {
+      const student = await Student.update(id, req.body);
 
-    const data = {
-      message: `update data pelajar id ${id}, nama ${nama}`,
-      data: studentsData,
-    };
+      const data = {
+        message: `update data pelajar`,
+        data: student,
+      };
 
-    res.json(data);
+      res.status(201).json(data);
+    } else {
+      const data = {
+        message : `Data Pelajar tidak ada`,
+      };
+
+      res.status(404).json(data);
+    }
   }
 
-  destroy(req, res) {
+  //method destroy
+  async destroy(req, res) {
     const { id } = req.params;
+    const student = await Student.find(id);
 
-    studentsData.splice(id, 1);
+    if (student) {
+      await Student.delete(id);
+      const data = {
+        message : `data pelajar dihapus`,
+      };
 
-    const data = {
-      message: `Menghapus data pelajar id ${id}`,
-      data: studentsData,
-    };
+      res.status(200).json(data);
+    } else {
+      const data = {
+        message : `data pelajar tidak ditemukan`,
+      };
 
-    res.json(data);
+      res.status(404).json(data);
+    }
   }
 }
 
